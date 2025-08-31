@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>...</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body, html {
+      background: #09090a;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    p {
+      color: #08c8c8;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+
+<script type="module">
+  function add_text(text) {
+    const p = document.createElement('p');
+    p.innerHTML = text;
+    document.body.appendChild(p);
+  }
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get('mode');
+  document.title = `${mode === 'development'? ' (dev)' : ''}`;
+  let example_hash;
+  if (mode === "development") {
+    document.title = `(dev) ${params.get('short_name')}`;
+    try {
+      ({default: example_hash} = await import('../../source/index.js'));
+    } catch (error) {
+      add_text(`Failed to load find dev index.js\n${error.message}`);
+    }
+  } else {
+    document.title = `${params.get('short_name')}`;
+    try {
+      ({default: example_hash} = await import(`../../dist/${params.get('short_name')}.js`));
+    } catch (error) {
+      add_text(`Failed to find built library ${params.get('short_name')}.js\n${error.message}`);
+    }
+  }
+  (async () => {
+    let meta = { Error: `Can't fetch meta` };
+    let meta_array = [];
+    try {
+      const response = await fetch(`./meta.json`);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+      meta = await response.json();
+    } catch (error) {
+      console.error(`Example '${name}' failed to fetch meta\n${error.message}`);
+    }
+    for (const value of [
+        ...params,
+        ['dir_hash', example_hash(params.get('dir'))],
+        ...Object.keys(meta).map((key) => [key, meta[key]])]) {
+      add_text(`${value[0]}: ${`${value[1]}`.replaceAll('\n', '<br>')}`);
+    }
+  })();
+</script>
+
+</body>
+</html>

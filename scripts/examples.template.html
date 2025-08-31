@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>%%LIBRARY_NAME%%...</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      --bg: #09090a;
+      --accent: #4dd0e1;
+      --header-h: 96px;
+    }
+    * {
+      box-sizing: border-box
+    }
+    body, html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    header {
+      position:fixed;
+      left:0; right:0; top:0;
+      height: var(--header-h);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(0,70,90,0.65), rgba(12,12,13,0.6));
+      backdrop-filter: blur(6px);
+      border-bottom: 2px solid var(--accent);
+      padding: 8px 20px;
+    }
+    .title-row {
+      position: relative;
+      width: 100%;
+      height: 48px;
+      gap: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .title {
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #f7f7f7;
+      font-size: 18px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .dev-badge {
+      position: absolute;
+      right: 0; top: 0;
+      align-items: center;
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 2px solid var(--accent);
+      background: rgba(12,12,13,0.6);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      box-shadow: 0 2px 12px rgba(77,208,225,0.04);
+    }
+    .dev-badge .bang {
+      display: inline-flex;
+      width: 18px; height: 18px;
+      border-radius: 100%;
+      align-items: center; justify-content: center;
+      border: 2px solid rgba(77,208,225,0.38);
+      background: rgba(77,208,225,0.03);
+      color: var(--accent);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1;
+    }
+    header hr.sep {
+      width: 100%;
+      border: 0;
+      border-top: 1px solid rgba(77,208,225,0.10);
+      margin: 6px 0;
+      opacity: 0.6;
+    }
+    .search-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .search-row .search-box {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(20,20,20,0.3);
+      border-radius: 3px;
+      padding: 2px;
+      border: 1px solid rgba(77,208,225,0.06);
+      backdrop-filter: blur(2px);
+    }
+    .search-row input[type="text"] {
+      min-width: 220px;
+      padding: 8px 10px;
+      background: transparent;
+      border: 1px solid rgba(77,208,225,0.12);
+      border-radius: 3px;
+      color: #f0f0f0;
+      outline: none;
+      font-size: 14px;
+    }
+    .search-row button {
+      padding: 8px 15px;
+      border-radius: 3px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .search-row button:hover {
+      background: rgba(77,208,225,0.06);
+    }
+    .search-row button:active {
+      transform: translateY(1px);
+      background-color: rgba(77,208,225,0.26);
+    }
+
+    /* container that sits to the left of the search box */
+    .sort-box{
+      display:flex; align-items:center; gap:10px;
+      background: rgba(20,20,20,0.3);
+      border:1px solid rgba(77,208,225,0.06);
+      border-radius:3px;
+      padding:2px 6px;
+      backdrop-filter: blur(2px);
+      color:#ccc; font-size:13px;
+    }
+    .sort-label{ color:#f0f0f0; font-weight:500; }
+
+    /* custom dropdown */
+    .sort-select{ position:relative; z-index:1100; }
+    .sort-trigger{
+      min-width: 125px;
+      display:flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      background:transparent;
+      color:#e9e9e9;
+      border:1px solid rgba(77,208,225,0.12);
+      border-radius:3px;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .sort-trigger:hover{ background: rgba(77,208,225,0.06); }
+    .sort-trigger:focus{ outline:none; box-shadow: 0 0 0 2px rgba(77,208,225,0.18); }
+    .sort-trigger .caret{ opacity:.8; transition: transform .15s ease; }
+    .sort-select[aria-open="true"] .caret{ transform: rotate(180deg); }
+
+    /* dropdown list */
+    .sort-menu{
+      position:absolute; left:0; top:calc(100% + 6px);
+      min-width: 160px;
+      padding:6px;
+      margin:0;
+      list-style:none;
+      background: linear-gradient(180deg, rgba(16,18,20,0.9), rgba(12,13,15,0.96));
+      border:1px solid rgba(77,208,225,0.22);
+      border-radius:8px;
+      box-shadow: 0 10px 30px rgba(77,208,225,0.10);
+      display:none;
+    }
+    .sort-select[aria-open="true"] .sort-menu{ display:block; }
+
+    .sort-option{
+      padding:8px 10px;
+      border-radius:6px;
+      color:#ddd;
+      cursor:pointer;
+      transition: background .12s ease, color .12s ease;
+      border:1px solid transparent;
+    }
+    .sort-option:hover{
+      background: rgba(77,208,225,0.08);
+      color:#f5f5f5;
+      border-color: rgba(77,208,225,0.18);
+    }
+    .sort-option.active{
+      background: rgba(77,208,225,0.12);
+      border-color: rgba(77,208,225,0.26);
+      color:#fff;
+    }
+
+    /* tiny asc/desc arrow button (▴ asc / ▾ desc) */
+    .sort-dir{
+      width:30px; height:35px;
+      display:flex; align-items:center; justify-content:center;
+      background:transparent;
+      color: var(--accent);
+      border:1px solid var(--accent);
+      border-radius:3px;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .sort-dir:hover{ background: rgba(77,208,225,0.06); }
+    .sort-dir:active{ transform: translateY(1px); background: rgba(77,208,225,0.26); }
+
+    /* keep everything nicely centered with the search box */
+    .search-row{ gap:12px; }
+
+    /* responsive tweak */
+    @media (max-width: 560px){
+      .sort-box{ gap:6px; padding:2px 4px; }
+      .sort-trigger{ padding:5px 8px; }
+      .sort-menu{ min-width: 140px; }
+      .sort-dir{ width:30px; height:28px; }
+    }
+
+    .center-col {
+      position: fixed;
+      top: 0; bottom: 0;
+      left: 15%; right: 15%;
+      display: flex;
+      flex-direction: column;
+      border-left: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+      background: linear-gradient(180deg, rgba(16,18,20,0.7), rgba(12,13,15,0.85));
+      z-index: 10;
+    }
+    .center-inner{
+      flex: 1;
+      overflow: auto;
+      padding: calc(var(--header-h) + 18px) 28px 28px;
+    }
+    :root {
+      --scroll-thumb-end: rgba(77,208,225,0.14);
+      --scroll-track: rgba(255,255,255,0.02);
+    }
+    .center-inner {
+      scrollbar-color: var(rgba(77,208,225,0.30)) transparent; /* firefox thumb + track */
+      -webkit-overflow-scrolling: touch;
+      scrollbar-gutter: stable;
+    }
+    .center-inner::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    .center-inner::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 8px 0;
+    }
+    .center-inner::-webkit-scrollbar-thumb {
+      background: rgba(77,208,225,0.30);
+      border-radius: 6px;
+      border: 2px solid rgba(12,12,13,0.6);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.02),
+        0 2px 8px rgba(77,208,225,0.06);
+      min-height: 28px;
+    }
+    .center-inner::-webkit-scrollbar-thumb:hover {
+      background: rgba(77,208,225,0.44);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.03),
+        0 3px 10px rgba(77,208,225,0.09);
+    }
+    .center-inner::-webkit-scrollbar-thumb:active {
+      background: rgba(77,208,225,0.50);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.03),
+        0 1px 6px rgba(77,208,225,0.10);
+    }
+    .center-inner::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    .object-card {
+      border: 1px solid rgba(77,208,225,0.14);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 18px;
+      background: rgba(8,8,9,0.16);
+      transition: box-shadow .18s, transform .12s, border-color .12s;
+    }
+    .object-card:hover {
+      box-shadow: 0 8px 30px rgba(77,208,225,0.06);
+      transform: translateY(-4px);
+      /*border-color: var(--accent);*/
+    }
+    .tags {
+      margin-bottom:10px;
+    }
+    .tag {
+      display: inline-block;
+      margin-right: 8px;
+      padding: 4px 8px;
+      border-radius: 7px;
+      font-size: 12px;
+      border: 1px solid rgba(77,208,225,0.18);
+      color: var(--accent);
+      background: transparent;
+    }
+    .tag:hover {
+      background: rgba(77,208,225,0.16);
+      cursor: pointer;
+    }
+    .name-link {
+      color: inherit;
+      text-decoration: none;
+    }
+    .name-link:hover {
+      color: #2196f3;
+      text-decoration: underline;
+    }
+    .object-card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: #f5f5f5;
+    }
+    .object-card a.link {
+      display: block;
+      font-size: 12px;
+      color: #9aa0a6;
+      text-decoration: none;
+      margin-top: 2px;
+    }
+    a.link:hover {
+      text-decoration: underline;
+    }
+    .object-card p {
+      margin: 8px 0 0;
+      color: #c8c8c8;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    @media (max-width: 900px) {
+      .center-col {
+        left: 6%;
+        right: 6%;
+      }
+      .search-row input[type="text"] {
+        min-width: 140px;
+      }
+      .dev-badge {
+        right: 12px;
+        padding: 5px 8px;
+        font-size: 12px;
+      }
+    }
+    @media (max-width: 560px) {
+      .center-col {
+        left: 4%;
+        right: 4%;
+      }
+      header {
+        height: 110px;
+        --header-h: 110px;
+      }
+      .title {
+        font-size: 15px;
+      }
+      .search-row {
+        gap:6px;
+        padding: 6px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="title-row">
+    <div class="title">%%LIBRARY_FULL_NAME%% (%%LIBRARY_SHORT_NAME%%)</div>
+    <div style="visibility: hidden;" class="dev-badge" title="Dev mode">
+      <span class="bang">!</span>
+      <span>Dev</span>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="search-row" aria-label="Search area">
+    <div class="sort-box" aria-label="Sorting controls">
+
+      <span class="sort-label">Sort:</span>
+
+      <div class="sort-select" id="sort-select" data-value="name">
+        <button class="sort-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <span class="sort-current">Name</span>
+          <span class="caret">▾</span>
+        </button>
+
+        <ul class="sort-menu" role="listbox" tabindex="-1">
+          <li class="sort-option active" data-value="name" role="option" aria-selected="true">Name</li>
+          <li class="sort-option" data-value="dir" role="option">Directory</li>
+          <li class="sort-option" data-value="description" role="option">Description</li>
+        </ul>
+      </div>
+
+      <!-- asc/desc tiny arrow button (▴ asc / ▾ desc) -->
+      <button id="sort-direction" class="sort-dir" type="button" title="Toggle sort direction" aria-label="Toggle sort direction">▴</button>
+    </div>
+
+    <div class="search-box">
+      <input id="search-input" type="text" placeholder="Filter...">
+      <button id="clear-button" type="button">Clear</button>
+    </div>
+  </div>
+</header>
+
+<div class="center-col" role="main" aria-label="Main content column">
+  <div class="center-inner">
+
+  </div>
+</div>
+
+<script type="module">
+  const node_env = '%%NODE_ENV%%';
+  const example_list = '%%EXAMPLES_LIST%%';
+  const full_name = '%%LIBRARY_FULL_NAME%%'
+  const short_name = '%%LIBRARY_SHORT_NAME%%'.replaceAll(' ', '');
+
+  let storedFilter = localStorage.getItem(`${short_name}_filterText`);
+  const input = document.querySelector('#search-input');
+  if (storedFilter) {
+    input.value = storedFilter;
+  }
+  input.addEventListener('input', () => {
+    storedFilter = input.value;
+    localStorage.setItem(`${short_name}_filterText`, storedFilter);
+    filterCards(storedFilter);
+  });
+
+  const button = document.querySelector('#clear-button');
+  button.addEventListener('click', () => {
+    storedFilter = '';
+    input.value = storedFilter;
+    localStorage.setItem(`${short_name}_filterText`, storedFilter);
+    filterCards(storedFilter);
+  });
+
+  const sortSelect = document.getElementById('sort-select');
+  const sortTrigger = sortSelect.querySelector('.sort-trigger');
+  const sortMenu = sortSelect.querySelector('.sort-menu');
+  const sortCurrent = sortSelect.querySelector('.sort-current');
+  let sortField = sortSelect.dataset.value || 'name';
+  let sortAsc = true;
+  function saveSortSettings() {
+    try {
+      localStorage.setItem(`${short_name}_sortField`, sortField);
+      localStorage.setItem(`${short_name}_sortAsc`, sortAsc ? '1' : '0');
+    } catch (e) {}
+  }
+
+  function loadSortSettings() {
+    try {
+      const sf = localStorage.getItem(`${short_name}_sortField`);
+      const sa = localStorage.getItem(`${short_name}_sortAsc`);
+      if (sf) sortField = sf;
+      if (sa !== null) sortAsc = sa === '1';
+    } catch (e) {}
+    const activeLi = sortMenu.querySelector(`.sort-option[data-value="${sortField}"]`);
+    if (activeLi) {
+      sortMenu.querySelectorAll('.sort-option').forEach(li => {
+        const isActive = li === activeLi;
+        li.classList.toggle('active', isActive);
+        li.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      sortCurrent.textContent = activeLi.textContent.trim();
+    } else {
+      const first = sortMenu.querySelector('.sort-option');
+      if (first) {
+        sortCurrent.textContent = first.textContent.trim();
+        if (!sortField) sortField = first.dataset.value;
+      }
+    }
+    sortSelect.dataset.value = sortField;
+    sortSelect.setAttribute('aria-open', 'false');
+    sortTrigger.setAttribute('aria-expanded', 'false');
+  }
+  function openSort() {
+    sortSelect.setAttribute('aria-open', 'true');
+    sortTrigger.setAttribute('aria-expanded', 'true');
+  }
+  function closeSort() {
+    sortSelect.setAttribute('aria-open', 'false');
+    sortTrigger.setAttribute('aria-expanded', 'false');
+  }
+  sortTrigger.addEventListener('click', (e) => {
+    const isOpen = sortSelect.getAttribute('aria-open') === 'true';
+    isOpen ? closeSort() : openSort();
+  });
+  sortMenu.addEventListener('click', (e) => {
+    const item = e.target.closest('.sort-option');
+    if (!item) return;
+    sortMenu.querySelectorAll('.sort-option').forEach(li => {
+      li.classList.toggle('active', li === item);
+      li.setAttribute('aria-selected', li === item ? 'true' : 'false');
+    });
+    sortField = item.dataset.value;
+    sortSelect.dataset.value = sortField;
+    sortCurrent.textContent = item.textContent.trim();
+    saveSortSettings();
+    closeSort();
+    resort();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!sortSelect.contains(e.target)) closeSort();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSort();
+  });
+  const sortDirBtn = document.getElementById('sort-direction');
+  loadSortSettings();
+  sortDirBtn.textContent = sortAsc ? '▴' : '▾';
+  sortDirBtn.addEventListener('click', () => {
+    sortAsc = !sortAsc;
+    sortDirBtn.textContent = sortAsc ? '▴' : '▾';
+    saveSortSettings();
+    resort();
+  });
+  function resort(){
+    const container = document.querySelector('.center-inner');
+    const cards = Array.from(container.children);
+    const getVal = (ex) => {
+      if (sortField === 'name') return ex.name || '';
+      if (sortField === 'dir') return ex.dir || '';
+      if (sortField === 'description') return ex.description || '';
+      return '';
+    };
+    cards.sort((A,B)=>{
+      const a = examples[A.id]; const b = examples[B.id];
+      const va = (getVal(a)+'').toLowerCase();
+      const vb = (getVal(b)+'').toLowerCase();
+      if (va < vb) return sortAsc ? -1 : 1;
+      if (va > vb) return sortAsc ? 1 : -1;
+      return 0;
+    });
+    cards.forEach(c => container.appendChild(c));
+  }
+
+  const centerInner = document.querySelector('.center-inner');
+  let isScrolling = false;
+  let scrollTarget = 0;
+  let scrollVelocity = 0;
+  let scrollAnimationId = null;
+  function smoothScroll() {
+    const currentScroll = centerInner.scrollTop;
+    const diff = scrollTarget - currentScroll;
+    scrollVelocity = diff * 0.2;
+    if (Math.abs(diff) > 0.5) {
+      centerInner.scrollTop = currentScroll + scrollVelocity;
+      scrollAnimationId = requestAnimationFrame(smoothScroll);
+    } else {
+      centerInner.scrollTop = scrollTarget;
+      isScrolling = false;
+      scrollAnimationId = null;
+    }
+  }
+  document.addEventListener('wheel', function(event) {
+    if (event.target.closest('.center-inner')) return;
+    event.preventDefault();
+    const delta = event.deltaY;
+    scrollTarget = centerInner.scrollTop + delta;
+    scrollTarget = Math.max(0, Math.min(scrollTarget, centerInner.scrollHeight - centerInner.clientHeight));
+    if (!isScrolling) {
+      isScrolling = true;
+      smoothScroll();
+    }
+  }, { passive: false });
+  centerInner.addEventListener('wheel', function() {
+    if (scrollAnimationId) {
+      cancelAnimationFrame(scrollAnimationId);
+      isScrolling = false;
+      scrollAnimationId = null;
+    }
+  });
+
+  document.title = node_env === 'development'? `${short_name} (dev)` : `${short_name}`;
+  document.querySelector('.dev-badge').style.visibility =
+    node_env === 'development' ? 'visible' : 'hidden';
+
+  const examples = {};
+  function addExampleDiv(example) {
+    const container = document.querySelector('.center-inner');
+    const card = document.createElement('div');
+    card.id = example.dir;
+    card.className = 'object-card';
+    const tags = document.createElement('div');
+    tags.className = 'tags';
+    example.tags.forEach(tag => {
+      const span = document.createElement('span');
+      span.className = 'tag';
+      span.textContent = `${tag}`;
+      span.addEventListener('click', (e) => {
+        storedFilter = e.target.textContent;
+        input.value = storedFilter;
+        localStorage.setItem(`${short_name}_filterText`, storedFilter);
+        filterCards(storedFilter);
+      });
+      tags.appendChild(span);
+    });
+    card.appendChild(tags);
+
+    const href = `${example.url}?mode=${node_env}` +
+                 `&full_name=${full_name}` +
+                 `&short_name=${short_name}` +
+                 `&dir=${example.dir}`;
+
+    const h3 = document.createElement("h3");
+    const nameLink = document.createElement("a");
+    nameLink.href = href;
+    nameLink.textContent = example.name;
+    nameLink.className = "name-link";
+    h3.appendChild(nameLink);
+    card.appendChild(h3);
+
+    const a = document.createElement('a');
+    a.className = 'link';
+    a.href = href;
+    a.textContent = example.dir;
+    card.appendChild(a);
+
+    const p = document.createElement('p');
+    p.innerHTML = example.description.replaceAll('\n', '<br>');
+    card.appendChild(p);
+
+    function compareCards(a, b) {
+      a = examples[a.id];
+      b = examples[b.id];
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      const tagsA = a.tags.join(",").toLowerCase();
+      const tagsB = b.tags.join(",").toLowerCase();
+      if (tagsA < tagsB) return -1;
+      if (tagsA > tagsB) return 1;
+      return 0;
+    }
+
+    for (const card2 of container.children) {
+      if (compareCards(card, card2) < 0) {
+        container.insertBefore(card, card2);
+        filterCards(storedFilter);
+        return;
+      }
+    }
+    container.appendChild(card);
+    filterCards(storedFilter);
+  }
+  async function fetch_example(name) {
+    const url = `examples/${name}`;
+    const example = examples[name] = {};
+    let meta = null;
+    try {
+      const response = await fetch(`/${url}/meta.json`);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+      meta = await response.json();
+    } catch (error) {
+      console.error(`Example '${name}' failed to fetch meta\n${error.message}`);
+    }
+    example.dir = name;
+    example.url = `/examples/${name}/index.html`;
+    if (meta) {
+      example.name = meta.name;
+      example.description = meta.description;
+      example.tags = meta.tags;
+    } else {
+      example.name = name;
+      example.description = 'Failed to fetch meta';
+      example.tags = ['❗'];
+    }
+    return example;
+  }
+  const fetches = example_list.map(example_name =>
+      fetch_example(example_name).then(addExampleDiv)
+  );
+  Promise.all(fetches).then(() => {
+    resort();
+  });
+
+  function filterCards(text) {
+    const container = document.querySelector('.center-inner');
+
+    function cardIncludes(card, text) {
+      if (!text) {
+        return 1;
+      }
+      text = text.toLowerCase();
+      card = examples[card.id];
+      if (card.name.toLowerCase().indexOf(text) !== -1) {
+        return 1;
+      }
+      if (card.dir.toLowerCase().indexOf(text) !== -1) {
+        return 1;
+      }
+      if (card.description.toLowerCase().indexOf(text) !== -1) {
+        return 1;
+      }
+      for (const tag of card.tags) {
+        if (tag.toLowerCase().indexOf(text) !== -1) {
+          return 1;
+        }
+      }
+      return 0;
+    }
+    for (const card of container.children) {
+      if (cardIncludes(card, text)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
