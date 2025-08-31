@@ -19,8 +19,6 @@ const lib_umd = project.unpkg? path.basename(project.unpkg)
     : project.jsdelivr? path.basename(project.jsdelivr)
     : `${project.name}.umd.js`;
 
-// Filter add + to combine
-
 export default defineConfig({
   root: '.',
   build: {
