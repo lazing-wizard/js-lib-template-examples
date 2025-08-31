@@ -49,7 +49,11 @@ export default function generateExamplesPage(options = {}) {
       .replaceAll(`'%%EXAMPLES_LIST%%'`, `[${examples}]`)
       .replaceAll(`%%NODE_ENV%%`, mode)
       .replaceAll(`%%LIBRARY_FULL_NAME%%`, options.lib_full_name)
-      .replaceAll(`%%LIBRARY_SHORT_NAME%%`, options.lib_short_name);
+      .replaceAll(`%%LIBRARY_SHORT_NAME%%`, options.lib_short_name)
+      .replaceAll(`%%LIBRARY_AUTHOR%%`, options.lib_author)
+      .replaceAll(`%%LIBRARY_ES%%`, options.lib_es)
+      .replaceAll(`%%LIBRARY_CJS%%`, options.lib_cjs)
+      .replaceAll(`%%LIBRARY_UMD%%`, options.lib_umd);
     fs.mkdirSync(dist_dir, { recursive: true });
     fs.writeFileSync(page_path, page);
     console.log(`Generated examples html page ${page_filename}`);

@@ -1,5 +1,7 @@
 {
   "name": "Empty Html First",
-  "tags": ["Html", "Empty", "1/3"],
+  "tags": ["Html", "Empty", "1/4"],
+  "author": "Lazing Wizard",
+  "link": "https://git.local/lazing-wizard/js-lib-template-examples",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit mauris a nibh laoreet convallis. Aliquam suscipit leo ex, ut faucibus arcu egestas nec. Maecenas at fringilla dolor. Fusce pellentesque felis mi, ac dapibus velit lacinia lobortis. Nam viverra, felis in rutrum sagittis, orci mauris tempus mauris, ut accumsan magna metus a lorem. Sed rhoncus mauris vitae tellus dapibus, at viverra turpis tincidunt. Etiam bibendum sodales dui, nec fringilla lectus consequat et. Quisque pulvinar enim eu enim sagittis, non imperdiet eros vulputate. Suspendisse nec bibendum nisl, quis pulvinar diam."
 }

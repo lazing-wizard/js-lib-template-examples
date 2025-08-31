@@ -1,11 +1,25 @@
 //
 
-const short_name = 'example_lib'
-const full_name = 'Example Library'
-
 import { defineConfig } from 'vite';
 
 import generateExamplesPage from './scripts/generate-examples-page.js';
+
+import fs from 'fs';
+import path from 'path';
+
+const project = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
+
+const short_name = project.name;
+const full_name = project.description;
+const lib_author = project.author;
+
+const lib_es = project.module? path.basename(project.module) : `${project.name}.js`;
+const lib_cjs = project.main? path.basename(project.main) : `${project.name}.cjs`;
+const lib_umd = project.unpkg? path.basename(project.unpkg)
+    : project.jsdelivr? path.basename(project.jsdelivr)
+    : `${project.name}.umd.js`;
+
+// Filter add + to combine
 
 export default defineConfig({
   root: '.',
@@ -30,7 +44,7 @@ export default defineConfig({
       name: full_name,
       formats: ['es', 'cjs', 'umd'],
       fileName: (format) =>
-        `${short_name}.${format === 'es' ? '' : format === 'cjs'? 'c' : 'umd.'}js`,
+        format === 'es' ? lib_es : format === 'cjs'? lib_cjs : lib_umd,
     },
     rollupOptions: {
       external: [],
@@ -48,6 +62,10 @@ export default defineConfig({
     generateExamplesPage({
       lib_full_name : full_name,
       lib_short_name : short_name,
+      lib_author: lib_author,
+      lib_es: lib_es,
+      lib_cjs: lib_cjs,
+      lib_umd: lib_umd,
     })
   ],
 });

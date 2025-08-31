@@ -38,7 +38,7 @@
   } else {
     document.title = `${params.get('short_name')}`;
     try {
-      ({default: example_hash} = await import(`../../dist/${params.get('short_name')}.js`));
+      ({default: example_hash} = await import( /* @vite-ignore */ `../../dist/${params.get('lib_es')}`));
     } catch (error) {
       add_text(`Failed to find built library ${params.get('short_name')}.js\n${error.message}`);
     }

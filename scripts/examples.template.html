@@ -126,39 +126,48 @@
       transform: translateY(1px);
       background-color: rgba(77,208,225,0.26);
     }
-
-    /* container that sits to the left of the search box */
-    .sort-box{
-      display:flex; align-items:center; gap:10px;
+    .sort-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       background: rgba(20,20,20,0.3);
-      border:1px solid rgba(77,208,225,0.06);
-      border-radius:3px;
-      padding:2px 6px;
+      border: 1px solid rgba(77,208,225,0.06);
+      border-radius: 3px;
+      padding: 2px 6px;
       backdrop-filter: blur(2px);
-      color:#ccc; font-size:13px;
-    }
-    .sort-label{ color:#f0f0f0; font-weight:500; }
-
-    /* custom dropdown */
-    .sort-select{ position:relative; z-index:1100; }
-    .sort-trigger{
-      min-width: 125px;
-      display:flex; align-items:center; gap:8px;
-      padding:6px 10px;
-      background:transparent;
-      color:#e9e9e9;
-      border:1px solid rgba(77,208,225,0.12);
-      border-radius:3px;
-      cursor:pointer;
+      color: #ccc;
       font-size:13px;
     }
-    .sort-trigger:hover{ background: rgba(77,208,225,0.06); }
-    .sort-trigger:focus{ outline:none; box-shadow: 0 0 0 2px rgba(77,208,225,0.18); }
-    .sort-trigger .caret{ opacity:.8; transition: transform .15s ease; }
-    .sort-select[aria-open="true"] .caret{ transform: rotate(180deg); }
-
-    /* dropdown list */
-    .sort-menu{
+    .sort-label { color: #f0f0f0; font-weight: 500; }
+    .sort-select { position: relative; z-index: 1100; }
+    .sort-trigger {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 6px 10px;
+      background: transparent;
+      color: #e9e9e9;
+      border: 1px solid rgba(77,208,225,0.12);
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 13px;
+      min-width: 130px;
+      box-sizing: border-box;
+    }
+    .sort-trigger .sort-current {
+      position: absolute;
+      left:50%;
+      transform: translateX(-55%);
+      white-space: nowrap;
+      pointer-events: none;
+      text-align: center;
+      width: max-content;
+    }
+    .sort-trigger:hover { background: rgba(77,208,225,0.06); }
+    .sort-trigger:focus { outline:none; box-shadow: 0 0 0 2px rgba(77,208,225,0.18); }
+    .sort-trigger .caret { margin-left: auto; opacity:.8; transition: transform .15s ease; }
+    .sort-select[aria-open="true"] .caret { transform: rotate(180deg); }
+    .sort-menu {
       position:absolute; left:0; top:calc(100% + 6px);
       min-width: 160px;
       padding:6px;
@@ -171,8 +180,7 @@
       display:none;
     }
     .sort-select[aria-open="true"] .sort-menu{ display:block; }
-
-    .sort-option{
+    .sort-option {
       padding:8px 10px;
       border-radius:6px;
       color:#ddd;
@@ -180,43 +188,39 @@
       transition: background .12s ease, color .12s ease;
       border:1px solid transparent;
     }
-    .sort-option:hover{
+    .sort-option:hover {
       background: rgba(77,208,225,0.08);
       color:#f5f5f5;
       border-color: rgba(77,208,225,0.18);
     }
-    .sort-option.active{
+    .sort-option.active {
       background: rgba(77,208,225,0.12);
       border-color: rgba(77,208,225,0.26);
       color:#fff;
     }
-
-    /* tiny asc/desc arrow button (▴ asc / ▾ desc) */
     .sort-dir{
-      width:30px; height:35px;
-      display:flex; align-items:center; justify-content:center;
-      background:transparent;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
       color: var(--accent);
-      border:1px solid var(--accent);
-      border-radius:3px;
-      font-size:14px;
-      cursor:pointer;
-      user-select:none;
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      box-sizing: border-box;
     }
-    .sort-dir:hover{ background: rgba(77,208,225,0.06); }
-    .sort-dir:active{ transform: translateY(1px); background: rgba(77,208,225,0.26); }
-
-    /* keep everything nicely centered with the search box */
+    .sort-dir:hover { background: rgba(77,208,225,0.06); }
+    .sort-dir:active { transform: translateY(1px); background: rgba(77,208,225,0.26); }
     .search-row{ gap:12px; }
-
-    /* responsive tweak */
-    @media (max-width: 560px){
+    @media (max-width: 560px) {
       .sort-box{ gap:6px; padding:2px 4px; }
       .sort-trigger{ padding:5px 8px; }
       .sort-menu{ min-width: 140px; }
       .sort-dir{ width:30px; height:28px; }
     }
-
     .center-col {
       position: fixed;
       top: 0; bottom: 0;
@@ -228,7 +232,7 @@
       background: linear-gradient(180deg, rgba(16,18,20,0.7), rgba(12,13,15,0.85));
       z-index: 10;
     }
-    .center-inner{
+    .center-inner {
       flex: 1;
       overflow: auto;
       padding: calc(var(--header-h) + 18px) 28px 28px;
@@ -274,8 +278,8 @@
     .center-inner::-webkit-scrollbar-corner {
       background: transparent;
     }
-
     .object-card {
+      position: relative;
       border: 1px solid rgba(77,208,225,0.14);
       border-radius: 12px;
       padding: 14px;
@@ -287,6 +291,22 @@
       box-shadow: 0 8px 30px rgba(77,208,225,0.06);
       transform: translateY(-4px);
       /*border-color: var(--accent);*/
+    }
+    .object-card .author {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 12px;
+      color: #9aa0a6;
+      white-space: nowrap;
+    }
+    .object-card .author a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .object-card .author a:hover {
+      text-decoration: underline;
     }
     .tags {
       margin-bottom:10px;
@@ -377,42 +397,32 @@
       <span>Dev</span>
     </div>
   </div>
-
   <hr class="sep">
-
   <div class="search-row" aria-label="Search area">
     <div class="sort-box" aria-label="Sorting controls">
-
       <span class="sort-label">Sort:</span>
-
       <div class="sort-select" id="sort-select" data-value="name">
         <button class="sort-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
           <span class="sort-current">Name</span>
           <span class="caret">▾</span>
         </button>
-
         <ul class="sort-menu" role="listbox" tabindex="-1">
           <li class="sort-option active" data-value="name" role="option" aria-selected="true">Name</li>
           <li class="sort-option" data-value="dir" role="option">Directory</li>
           <li class="sort-option" data-value="description" role="option">Description</li>
+          <li class="sort-option" data-value="author" role="option">Author</li>
         </ul>
       </div>
-
-      <!-- asc/desc tiny arrow button (▴ asc / ▾ desc) -->
       <button id="sort-direction" class="sort-dir" type="button" title="Toggle sort direction" aria-label="Toggle sort direction">▴</button>
     </div>
-
     <div class="search-box">
       <input id="search-input" type="text" placeholder="Filter...">
       <button id="clear-button" type="button">Clear</button>
     </div>
   </div>
 </header>
-
 <div class="center-col" role="main" aria-label="Main content column">
-  <div class="center-inner">
-
-  </div>
+  <div class="center-inner"></div>
 </div>
 
 <script type="module">
@@ -420,6 +430,10 @@
   const example_list = '%%EXAMPLES_LIST%%';
   const full_name = '%%LIBRARY_FULL_NAME%%'
   const short_name = '%%LIBRARY_SHORT_NAME%%'.replaceAll(' ', '');
+  const lib_es = '%%LIBRARY_ES%%';
+  const lib_cjs = '%%LIBRARY_CJS%%';
+  const lib_umd = '%%LIBRARY_UMD%%';
+  const lib_author = '%%LIBRARY_AUTHOR%%';
 
   let storedFilter = localStorage.getItem(`${short_name}_filterText`);
   const input = document.querySelector('#search-input');
@@ -521,16 +535,17 @@
     saveSortSettings();
     resort();
   });
-  function resort(){
+  function resort() {
     const container = document.querySelector('.center-inner');
     const cards = Array.from(container.children);
     const getVal = (ex) => {
       if (sortField === 'name') return ex.name || '';
       if (sortField === 'dir') return ex.dir || '';
       if (sortField === 'description') return ex.description || '';
+      if (sortField === 'author') return ex.author || '';
       return '';
     };
-    cards.sort((A,B)=>{
+    cards.sort((A,B) => {
       const a = examples[A.id]; const b = examples[B.id];
       const va = (getVal(a)+'').toLowerCase();
       const vb = (getVal(b)+'').toLowerCase();
@@ -588,6 +603,26 @@
     const card = document.createElement('div');
     card.id = example.dir;
     card.className = 'object-card';
+    if (example.author || example.link) {
+      const authorDiv = document.createElement('div');
+      authorDiv.className = 'author';
+      if (example.author && example.link) {
+        const a = document.createElement('a');
+        a.href = example.link;
+        a.textContent = example.author;
+        a.target = "_blank";
+        authorDiv.appendChild(a);
+      } else if (example.author) {
+        authorDiv.textContent = example.author;
+      } else if (example.link) {
+        const a = document.createElement('a');
+        a.href = example.link;
+        a.textContent = example.link;
+        a.target = "_blank";
+        authorDiv.appendChild(a);
+      }
+      card.appendChild(authorDiv);
+    }
     const tags = document.createElement('div');
     tags.className = 'tags';
     example.tags.forEach(tag => {
@@ -607,8 +642,11 @@
     const href = `${example.url}?mode=${node_env}` +
                  `&full_name=${full_name}` +
                  `&short_name=${short_name}` +
-                 `&dir=${example.dir}`;
-
+                 `&lib_author=${lib_author}` +
+                 `&dir=${example.dir}` +
+                 `&lib_es=${lib_es}` +
+                 `&lib_cjs=${lib_cjs}` +
+                 `&lib_umd=${lib_umd}`;
     const h3 = document.createElement("h3");
     const nameLink = document.createElement("a");
     nameLink.href = href;
@@ -627,29 +665,7 @@
     p.innerHTML = example.description.replaceAll('\n', '<br>');
     card.appendChild(p);
 
-    function compareCards(a, b) {
-      a = examples[a.id];
-      b = examples[b.id];
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-      const tagsA = a.tags.join(",").toLowerCase();
-      const tagsB = b.tags.join(",").toLowerCase();
-      if (tagsA < tagsB) return -1;
-      if (tagsA > tagsB) return 1;
-      return 0;
-    }
-
-    for (const card2 of container.children) {
-      if (compareCards(card, card2) < 0) {
-        container.insertBefore(card, card2);
-        filterCards(storedFilter);
-        return;
-      }
-    }
     container.appendChild(card);
-    filterCards(storedFilter);
   }
   async function fetch_example(name) {
     const url = `examples/${name}`;
@@ -670,6 +686,8 @@
       example.name = meta.name;
       example.description = meta.description;
       example.tags = meta.tags;
+      example.author = meta.author;
+      example.link = meta.link;
     } else {
       example.name = name;
       example.description = 'Failed to fetch meta';
@@ -678,45 +696,104 @@
     return example;
   }
   const fetches = example_list.map(example_name =>
-      fetch_example(example_name).then(addExampleDiv)
+    fetch_example(example_name).then(addExampleDiv)
   );
-  Promise.all(fetches).then(() => {
-    resort();
-  });
 
+  /// TODO expression parser for search string
   function filterCards(text) {
     const container = document.querySelector('.center-inner');
-
-    function cardIncludes(card, text) {
-      if (!text) {
+    function cardIncludes(card, substr) {
+      if (!substr) {
         return 1;
       }
-      text = text.toLowerCase();
+      substr = substr.toLowerCase();
       card = examples[card.id];
-      if (card.name.toLowerCase().indexOf(text) !== -1) {
+      if (card.name && card.name.toLowerCase().indexOf(substr) !== -1) {
         return 1;
       }
-      if (card.dir.toLowerCase().indexOf(text) !== -1) {
+      if (card.dir && card.dir.toLowerCase().indexOf(substr) !== -1) {
         return 1;
       }
-      if (card.description.toLowerCase().indexOf(text) !== -1) {
+      if (card.description && card.description.toLowerCase().indexOf(substr) !== -1) {
+        return 1;
+      }
+      if (card.author && card.author.toLowerCase().indexOf(substr) !== -1) {
         return 1;
       }
       for (const tag of card.tags) {
-        if (tag.toLowerCase().indexOf(text) !== -1) {
+        if (tag && tag.toLowerCase().indexOf(substr) !== -1) {
           return 1;
         }
       }
       return 0;
     }
+    text = text
+      .replaceAll('\\+', '_%_%_%PLUS%_%_%_')
+      .split('+')
+      .filter(substr => { return substr.length > 0; })
+      .map(substr => { return substr.replaceAll('_%_%_%PLUS%_%_%_', '+'); });
     for (const card of container.children) {
-      if (cardIncludes(card, text)) {
+      let found = true;
+      for (const substr of text) {
+        if (!cardIncludes(card, substr)) {
+          card.style.display = 'none';
+          found = false;
+          break;
+        }
+      }
+      if (found) {
         card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
       }
     }
   }
+
+  function measureTextWidth(text, font) {
+    try {
+      const ctx = document.createElement('canvas').getContext('2d');
+      ctx.font = font || window.getComputedStyle(sortTrigger).font;
+      return ctx.measureText(text).width;
+    } catch (e) {
+      return text.length * 8;
+    }
+  }
+  function alignSortControls() {
+    if (!sortTrigger || !sortMenu || !sortDirBtn) return;
+    const options = Array.from(sortMenu.querySelectorAll('.sort-option'));
+    if (options.length) {
+      const computed = window.getComputedStyle(sortTrigger);
+      const font = computed.font; // use exact font metrics
+      let maxText = 0;
+      for (const li of options) {
+        const txt = li.textContent.trim();
+        const w = measureTextWidth(txt, font);
+        if (w > maxText) maxText = w;
+      }
+      const leftRightPadding = parseFloat(computed.paddingLeft || 10) + parseFloat(computed.paddingRight || 10);
+      const caretSpace = 18;
+      const borderAndGap = 12;
+      const minWidthPx = Math.ceil(maxText + leftRightPadding + caretSpace + borderAndGap);
+      const finalMin = Math.max(minWidthPx, 40);
+      sortTrigger.style.minWidth = finalMin + 'px';
+    }
+    requestAnimationFrame(() => {
+      const rect = sortTrigger.getBoundingClientRect();
+      if (rect && rect.height) {
+        sortDirBtn.style.height = Math.round(rect.height) + 'px';
+        sortDirBtn.style.lineHeight = Math.round(rect.height) + 'px';
+      }
+    });
+  }
+  let _alignTimer = 0;
+  function scheduleAlign() {
+    clearTimeout(_alignTimer);
+    _alignTimer = setTimeout(alignSortControls, 110);
+  }
+  alignSortControls();
+  window.addEventListener('resize', scheduleAlign);
+  Promise.all(fetches).then(() => {
+    resort();
+    alignSortControls();
+  });
 </script>
 
 </body>

@@ -1,5 +1,5 @@
 {
-  "name": "js-lib-template-example",
+  "name": "js-lib-template-examples",
   "version": "1.0.0",
   "description": "JavaScript library template with example viewer",
   "keywords": [],
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://git.local/lazing-wizard/js-lib-template-examples"
+    "url": "https://github.com/lazing-wizard/js-lib-template-examples"
   },
   "type": "module",
   "module": "dist/example_lib.js",
