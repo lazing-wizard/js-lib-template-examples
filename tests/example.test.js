@@ -1,7 +1,7 @@
 //
 
-import example_hash from "source/index.js";
+import example_hash from 'source/index.js';
 
-test('ExampleTest', () => {
-  expect(example_hash("Test")).toBe(1110712178);
+test('Example', () => {
+  expect(example_hash('Test')).toBe(1110712178);
 });
