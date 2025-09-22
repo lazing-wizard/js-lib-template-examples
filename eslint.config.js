@@ -21,7 +21,7 @@ export default [
     },
     rules: {
       quotes: ['error', 'single', { allowTemplateLiterals: true, avoidEscape: false }],
-      'max-len': ['error', { code: 120, tabWidth: 4 }],
+      'max-len': ['error', { code: 120, tabWidth: 2 }],
       semi: 'error',
       'prefer-const': 'warn',
       'no-unused-vars': 'warn',
