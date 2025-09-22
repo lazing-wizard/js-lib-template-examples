@@ -793,6 +793,7 @@
   Promise.all(fetches).then(() => {
     resort();
     alignSortControls();
+    filterCards(storedFilter);
   });
 </script>
 
