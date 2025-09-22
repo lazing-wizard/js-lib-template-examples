@@ -6,7 +6,7 @@ import jest from 'eslint-plugin-jest';
 import prettier from 'eslint-config-prettier';
 import eslintImport from 'eslint-plugin-import';
 
-/** @type {import('eslint').Linter.Config[]} */
+/** @type {import('eslint').FlatConfig[]} */
 export default [
   { ignores: ['dist/', 'coverage/', 'node_modules/'] },
   js.configs.recommended,
