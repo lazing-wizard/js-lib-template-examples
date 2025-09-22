@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-import chokidar from "chokidar";
+import chokidar from 'chokidar';
 
 function processPreviewExamples(src, dest) {
   if (!fs.existsSync(src)) return;
@@ -79,11 +79,11 @@ export default function generateExamplesPage(options = {}) {
       }
       watcher = chokidar
         .watch([examples_dir, template_path], { ignoreInitial: true })
-        .on("all", () => {
+        .on('all', () => {
           createExamplesPage(mode);
           server.ws.send({ type: 'full-reload' });
-      });
-      server.httpServer.on("close", () => {
+        });
+      server.httpServer.on('close', () => {
         if (watcher) {
           watcher.close();
           watcher = null;
